@@ -25,6 +25,7 @@ h1 {
       color: var(--darkBlue);
       font-family: "comfortaa";
       font-size: 4em;
+      text-shadow: 0 0 20px black;
 }
 h1 span {
       color: var(--lightBlue);
@@ -121,6 +122,7 @@ input[type="checkbox"] {
       );
       padding: 10px;
       border-radius: 15px;
+      filter: drop-shadow(0 0 10px black);
 }
 .item.checked {
       opacity: 0.5;
