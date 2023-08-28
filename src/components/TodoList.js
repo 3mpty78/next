@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Filters from "./Filters";
 
 // Import des icons
@@ -9,10 +9,16 @@ export default function TodoList() {
       const [itemList, setItemList] = useState([]);
       const [selectedCategory, setSelectedCategory] = useState("");
 
+      //Conservation des données dans le local storage
+      const updateLocalStorage = (updatedList) => {
+            localStorage.setItem("todoItems", JSON.stringify(updatedList));
+      };
+
       const handleItem = (event) => {
             setItem(event.target.value);
       };
 
+      // Ajout d'un item à la liste des tâches
       const postItem = () => {
             const newItem = {
                   text: item,
@@ -23,13 +29,17 @@ export default function TodoList() {
             setItemList([...itemList, newItem]);
             setItem("");
             setSelectedCategory("");
+            updateLocalStorage([...itemList, newItem]);
       };
 
+      // Suppression d'un item de la liste des tâches
       const removeItem = (index) => {
             const updatedList = itemList.filter((_, i) => i !== index);
             setItemList(updatedList);
+            updateLocalStorage(updatedList);
       };
 
+      // Vérification de la checkbox (checked ou pas)
       const toggleChecked = (index) => {
             const updatedList = itemList.map((item, i) => {
                   if (i === index) {
@@ -38,6 +48,7 @@ export default function TodoList() {
                   return item;
             });
             setItemList(updatedList);
+            updateLocalStorage(updatedList);
       };
 
       const handleCategoryChange = (category) => {
@@ -68,6 +79,13 @@ export default function TodoList() {
                   setItemList(updatedList);
             }
       };
+
+      useEffect(() => {
+            const storedItems = localStorage.getItem("todoItems");
+            if (storedItems) {
+                  setItemList(JSON.parse(storedItems));
+            }
+      }, []);
 
       return (
             <>
